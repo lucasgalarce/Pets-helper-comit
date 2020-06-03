@@ -1,0 +1,25 @@
+{
+  "name": "pets-helper-comit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasgalarce/Pets-helper-comit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucasgalarce/Pets-helper-comit/issues"
+  },
+  "homepage": "https://github.com/lucasgalarce/Pets-helper-comit#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.4",
+    "path": "^0.12.7"
+  }
+}
