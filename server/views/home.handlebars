@@ -1,0 +1,26 @@
+<header>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col">
+                <h1>Un lugar donde poder reencontrar a tu mascota perdida o adoptar a un animalito en busca de un nuevo
+                    hogar
+                </h1>
+                <!-- Search form -->
+                <form class="form-inline d-flex justify-content-end md-form form-sm active-cyan active-cyan-2 mt-2">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input id="search" class="form-control form-control-sm ml-3 w-25" type="text" placeholder="Buscar"
+                        aria-label="Search">
+                    <button class="btn-primary m-2 rounded">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div>
+    <h2>Lista de animalitos:</h2>
+
+    {{#each animals}}
+        <li><a href="/animal/{{this.id}}">Ver información de {{this.name}}</a></li>
+    {{/each}}
+</div>

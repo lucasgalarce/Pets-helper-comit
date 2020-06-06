@@ -7,8 +7,14 @@ const expHbs = require('express-handlebars');
 
 const app = express();
 
+const auth = require('./auth.js')
+const animals = require('./animals.js')
+
 // Middleware archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
+
+// Body Parser para Content-Type "application/x-www-form-urlencoded"
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // ----------------------------------------------------------
 // Configuración de Handlebars
@@ -23,10 +29,36 @@ app.engine("handlebars", expHbs({
 app.set("views", path.join(__dirname, "views"));
 // ----------------------------------------------------------
 
+// Rutas
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public/index.html"))
+    res.render("index");
 });
 
+app.post("/login", (req, res) => {
+
+  auth.login(req.body.username, req.body.password, result => {
+
+    if(result.valid){
+      animals.getAll(list => {
+        res.render("home", { animals: list});
+      })
+    } else {
+      //algo
+    }
+  })
+
+});
+
+app.post("/register", (req, res) => {
+  //1.validar datos de registro
+
+})
+
+app.get("/animal/:id", (req, res) => {
+  animals.getById(req.params.id, animalItem => {
+    res.render("profile", { animal: animalItem});
+  })
+})
 
 
 
