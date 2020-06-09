@@ -1,5 +1,6 @@
 const mongodb = require("mongodb");
 const mongoURL = "mongodb://localhost:27017";
+const mongoConfig = { useUnifiedTopology: true };
 
 /**
  * Consulta los datos de los animales
@@ -7,7 +8,7 @@ const mongoURL = "mongodb://localhost:27017";
  */
 
 const getAll = cbResult => {
-    mongodb.MongoClient.connect(mongoURL, (err, client) => {
+    mongodb.MongoClient.connect(mongoURL, mongoConfig,  (err, client) => {
         if (err) {
             // retornar array vacío
             cbResult([]);
@@ -29,9 +30,10 @@ const getAll = cbResult => {
 }
 
 const getById = (filterId, cbResult) => {
-    mongodb.MongoClient.connect(mongoURL, (err, client) => {
+    mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
         if (err) {
             cbResult({});
+            client.close();
         } else {
             const petsDb = client.db("Pets");
             const animalsCollection = petsDb.collection("animals");
@@ -42,11 +44,11 @@ const getById = (filterId, cbResult) => {
                 } else {
                     cbResult(animal);
                 }
-            })
+                client.close();
+            });
         }
-        client.close();
+    
     });
-
 }
 
 module.exports = {

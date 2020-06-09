@@ -17,10 +17,18 @@
     </div>
 </header>
 
-<div>
+<div class="animal-list" id="animal-list">
     <h2>Lista de animalitos:</h2>
-
     {{#each animals}}
-        <li><a href="/animal/{{this.id}}">Ver información de {{this.name}}</a></li>
+    
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="/img/{{this.profilePic}}" height="200px" alt="Card image">
+        <div class="card-body">
+            <h5 class="card-title">{{this.name}}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="/animal/{{this.id}}" class="btn btn-primary">Ver información de {{this.name}}</a>
+        </div>
+    </div>
     {{/each}}
 </div>

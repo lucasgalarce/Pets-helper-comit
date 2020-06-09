@@ -1,5 +1,6 @@
 const mongodb = require("mongodb");
 const mongoURL = "mongodb://localhost:27017";
+const mongoConfig = { useUnifiedTopology: true };
 
 /**
  * 
@@ -11,7 +12,7 @@ const mongoURL = "mongodb://localhost:27017";
 const login = (username, password, callbackResult) => {
 
 	// Nos conectamos al servidor de MongoDB
-	mongodb.MongoClient.connect(mongoURL, (err, client) => {
+	mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
 
 		if (err) {
 			//No me pude conectar al server, retorno false
@@ -21,8 +22,8 @@ const login = (username, password, callbackResult) => {
 			});
 		}
 		else {
-			const serveriiDB = client.db("Pets");
-			const usersCollection = serveriiDB.collection("users");
+			const petsDb = client.db("Pets");
+			const usersCollection = petsDb.collection("users");
 
 			usersCollection.findOne({ username: username, password: password }, (err, foundUser) => {
 				if (err) {
@@ -48,15 +49,110 @@ const login = (username, password, callbackResult) => {
 						});
 					}
 				}
+
+				client.close();
 			});
 		}
-		client.close();
+
 	});
 };
 
+/**
+ * Función que consulta usuarix en la DB y retorna los datos
+ * 
+ * @param {string} username Nombre de usuarix
+ * @param {function} callbackResult Callback: function(result: {
+ *  success: boolean,
+ *  username: {
+ *    username: string,
+ *    password: string
+ *  }
+ * })
+ */
+const getUser = (username, callbackResult) => {
 
+  mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
 
+    if (err) {
+
+      callbackResult({
+        success: false
+      });
+
+    } else {
+
+			const petsDb = client.db("Pets");
+			const usersCollection = petsDb.collection("users");
+
+      usersCollection.findOne({ username: username }, (err, result) => {
+
+        if (err) {
+          callbackResult({
+            success: false
+          });
+        } else {
+          callbackResult({
+            success: true,
+            username: result
+          });
+        }
+
+        client.close();
+
+      });
+
+    }
+
+  });
+
+}
+
+/**
+ * Función que registra nuevx usuarix (asume username y password validados)
+ * 
+ * @param {string} username Username
+ * @param {string} password Password
+ * @param {function} callbackResult Callback: function(result: boolean)
+ */
+const registerUser = (username, password, callbackResult) => {
+  mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
+
+    if (err) {
+
+      // Si hay error de conexión, retornamos el false
+      // (no cerramos conexión porque no se logró abrir)
+      callbackResult(false);
+
+    } else {
+
+			const petsDb = client.db("Pets");
+			const usersCollection = petsDb.collection("users");
+
+      const newUser = {
+        username: username,
+        password: password
+      };
+
+      // Insertamos el user en la DB
+      usersCollection.insertOne(newUser, (err, result) => {
+
+        if (err) {
+          callbackResult(false);
+        } else {
+          callbackResult(true);
+          // console.log(result);
+        }
+
+        client.close();
+      });
+
+    }
+
+  });
+}
 
 module.exports = {
-	login
+  login,
+  getUser,
+  registerUser
 }

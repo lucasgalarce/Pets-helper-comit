@@ -43,3 +43,15 @@ h1 {
 #search{
     opacity: .7;
 }
+
+.animal-list{
+ text-align: center;
+ background-color: rgb(231, 5, 5);
+}
+
+.card{
+    float: left;
+    margin: 5px;
+    padding: 2px;
+    align-self: center;
+}
