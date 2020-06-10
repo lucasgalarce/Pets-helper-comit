@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const expHbs = require('express-handlebars');
+const expSession = require('express-session')
 
 const app = express();
 
@@ -28,6 +29,13 @@ app.engine("handlebars", expHbs({
 
 app.set("views", path.join(__dirname, "views"));
 // ----------------------------------------------------------
+
+// Configuración del objeto de sesión
+app.use(expSession({
+  secret: "Este texto puede contener cualquier cosa",
+  resave: false,
+  saveUninitialized: false
+}));
 
 // Rutas
 // Pagina de login
@@ -138,6 +146,8 @@ app.post("/register", (req, res) => {
 
   });
 });
+
+
 
 
 app.listen(port, (req, res) => {

@@ -1,6 +1,6 @@
-const mongodb = require("mongodb");
-const mongoURL = "mongodb://localhost:27017";
-const mongoConfig = { useUnifiedTopology: true };
+const mongodb = require('mongodb');
+const uri = "mongodb+srv://admin:admin@cluster0-opnyh.mongodb.net/Pets?retryWrites=true&w=majority";
+const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
 
 /**
  * Consulta los datos de los animales
@@ -8,14 +8,15 @@ const mongoConfig = { useUnifiedTopology: true };
  */
 
 const getAll = cbResult => {
-    mongodb.MongoClient.connect(mongoURL, mongoConfig,  (err, client) => {
+    mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
         if (err) {
             // retornar array vacío
             cbResult([]);
             client.close();
         } else {
-            const petsDb = client.db("Pets");
-            const animalsCollection = petsDb.collection("animals");
+
+            const animalsCollection = client.db("Petshelper").collection("animals");
+
             // Busco los datos y lo convierto en array
             animalsCollection.find().toArray((err, animalList) => {
                 if (err) {
@@ -30,16 +31,16 @@ const getAll = cbResult => {
 }
 
 const getById = (filterId, cbResult) => {
-    mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
+    mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
         if (err) {
             cbResult({});
             client.close();
         } else {
-            const petsDb = client.db("Pets");
-            const animalsCollection = petsDb.collection("animals");
+
+            const animalsCollection = client.db("Petshelper").collection("animals");
 
             animalsCollection.findOne({ id: filterId }, (err, animal) => {
-                if(err){
+                if (err) {
                     cbResult(undefined);
                 } else {
                     cbResult(animal);
@@ -47,7 +48,7 @@ const getById = (filterId, cbResult) => {
                 client.close();
             });
         }
-    
+
     });
 }
 

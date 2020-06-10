@@ -1,6 +1,6 @@
-const mongodb = require("mongodb");
-const mongoURL = "mongodb://localhost:27017";
-const mongoConfig = { useUnifiedTopology: true };
+const mongodb = require('mongodb');
+const uri = "mongodb+srv://admin:admin@cluster0-opnyh.mongodb.net/Pets?retryWrites=true&w=majority";
+const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
 
 /**
  * 
@@ -11,51 +11,45 @@ const mongoConfig = { useUnifiedTopology: true };
 
 const login = (username, password, callbackResult) => {
 
-	// Nos conectamos al servidor de MongoDB
-	mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
+  mongodb.MongoClient.connect(uri, mongoConfig,  (err, client) => {
 
-		if (err) {
-			//No me pude conectar al server, retorno false
-			callbackResult({
-				valid: false,
-				message: "Sorry, site is under maintance now, retry later"
-			});
-		}
-		else {
-			const petsDb = client.db("Pets");
-			const usersCollection = petsDb.collection("users");
+    if (err) {
+      //No me pude conectar al server, retorno false
+      callbackResult({
+        valid: false,
+        message: "Sorry, site is under maintance now, retry later"
+      });
+    }
+    else {
+      const usersCollection = client.db("Petshelper").collection("users");
 
-			usersCollection.findOne({ username: username, password: password }, (err, foundUser) => {
-				if (err) {
+      usersCollection.findOne({ username: username, password: password }, (err, foundUser) => {
 
-					callbackResult({
-						valid: false,
-						message: "Error"
-					});
+        if (err) {
+          callbackResult({
+            valid: false,
+            message: "Error"
+          });
+        } else {
+          // Si pude consultar los datos, valido si encontré esa combinación usr/pwd o no.
+          if (!foundUser) {
+            callbackResult({
+              valid: false,
+              msg: "Invalid user/password."
+            });
+          } else {
+            // Si valida ok, no mando mensaje porque no se va a usar.
+            callbackResult({
+              valid: true
+            });
+          }
+        };
+        client.close();
+      });
+    }
+  });
+}
 
-				} else {
-
-					// Si pude consultar los datos, valido si encontré esa combinación usr/pwd o no.
-					if (!foundUser) {
-						callbackResult({
-							valid: false,
-							msg: "Invalid user/password."
-						});
-					} else {
-
-						// Si valida ok, no mando mensaje porque no se va a usar.
-						callbackResult({
-							valid: true
-						});
-					}
-				}
-
-				client.close();
-			});
-		}
-
-	});
-};
 
 /**
  * Función que consulta usuarix en la DB y retorna los datos
@@ -71,7 +65,7 @@ const login = (username, password, callbackResult) => {
  */
 const getUser = (username, callbackResult) => {
 
-  mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
+  mongodb.MongoClient.connect(uri, mongoConfig,  (err, client) => {
 
     if (err) {
 
@@ -80,10 +74,8 @@ const getUser = (username, callbackResult) => {
       });
 
     } else {
-
-			const petsDb = client.db("Pets");
-			const usersCollection = petsDb.collection("users");
-
+      const usersCollection = client.db("Petshelper").collection("users");
+      
       usersCollection.findOne({ username: username }, (err, result) => {
 
         if (err) {
@@ -115,7 +107,7 @@ const getUser = (username, callbackResult) => {
  * @param {function} callbackResult Callback: function(result: boolean)
  */
 const registerUser = (username, password, callbackResult) => {
-  mongodb.MongoClient.connect(mongoURL, mongoConfig, (err, client) => {
+  mongodb.MongoClient.connect(uri, mongoConfig,  (err, client) => {
 
     if (err) {
 
@@ -124,9 +116,8 @@ const registerUser = (username, password, callbackResult) => {
       callbackResult(false);
 
     } else {
+      const usersCollection = client.db("Petshelper").collection("users");
 
-			const petsDb = client.db("Pets");
-			const usersCollection = petsDb.collection("users");
 
       const newUser = {
         username: username,
@@ -140,7 +131,6 @@ const registerUser = (username, password, callbackResult) => {
           callbackResult(false);
         } else {
           callbackResult(true);
-          // console.log(result);
         }
 
         client.close();
