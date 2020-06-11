@@ -2,7 +2,7 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-body{
+body {
     margin-top: 60px;
 }
 
@@ -40,18 +40,23 @@ h1 {
 .active-cyan .fa, .active-cyan-2 .fa {
     color: #4dd0e1;
 }
-#search{
+
+#search {
     opacity: .7;
 }
 
-.animal-list{
- text-align: center;
- background-color: rgb(206, 140, 140);
+.animal-list {
+    text-align: center;
+    background-color: rgb(206, 140, 140);
 }
 
-.card{
+.card {
     float: left;
     margin: 5px;
     padding: 2px;
     align-self: center;
+}
+
+.logout-name {
+    font-weight: bold;
 }

@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "handlebars");
 
 app.engine("handlebars", expHbs({
-  defaultLayout: "main",
+  defaultLayout: "public",
   layoutsDir: path.join(__dirname, "views/layouts")
 }));
 
@@ -40,41 +40,87 @@ app.use(expSession({
 // Rutas
 // Pagina de login
 app.get("/", (req, res) => {
-  res.render("index", { layout: "landing" });
+  res.render("index");
+  console.log(req.session)
 });
 
 // Pagina de registro
 app.get("/signup", (req, res) => {
-  res.render("signup", { layout: "landing" })
+  res.render("signup")
 })
 
 // Pagina principal
 app.get("/home", (req, res) => {
   animals.getAll(list => {
-    res.render("home", { animals: list })
+    res.render("home", {
+      layout: "logged",
+      animals: list,
+      username: req.session.loggedUser
+    })
   })
 });
 
 // Perfil de animal
 app.get("/animal/:id", (req, res) => {
-  animals.getById(req.params.id, animalItem => {
-    res.render("profile", { animal: animalItem });
-  })
-})
+
+  if (req.session.loggedUser) {
+
+    animals.getById(req.params.id, animalItem => {
+      res.render("profile", {
+        layout: "logged",
+        animal: animalItem,
+        username: req.session.loggedUser
+      });
+    });
+
+  } else {
+    res.render("index", {
+      message: {
+        class: "failure",
+        text: "Necesitas iniciar sesion primero"
+      }
+    });
+  }
+});
 
 app.post("/login", (req, res) => {
 
   auth.login(req.body.username, req.body.password, result => {
 
-    if (result.valid) {
+    if (result.user) {
+
+      // Guardar usuario logueado en sesion
+      req.session.loggedUser = result.user;
+
       animals.getAll(list => {
-        res.render("home", { animals: list });
+        res.render("home", {
+          layout: "logged",
+          animals: list,
+          username: req.session.loggedUser
+        });
       })
     } else {
-      res.render("index", { layout: "landing", message: result.msg });
+      res.render("index", {
+        message: {
+          class: "failure",
+          text: "Usuario o contraseña invalidos"
+        }
+      });
     }
   })
 });
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+
+  res.render("index", {
+    message: {
+      class: "success",
+      text: "Cerro sesión correctamente, gracias"
+    }
+  });
+
+})
 
 app.post("/register", (req, res) => {
 
@@ -84,7 +130,6 @@ app.post("/register", (req, res) => {
     // Si no se pudo consultar a la DB renderizo signup con mensaje de error
     if (!result.success) {
       res.render("signup", {
-        layout: "landing",
         message: {
           class: "failure",
           text: "Disculpe, intente nuevamente."
@@ -96,7 +141,6 @@ app.post("/register", (req, res) => {
     // Si el usuario ya existe renderizo signup con mensaje de error
     if (result.username) {
       res.render("signup", {
-        layout: "landing",
         message: {
           class: "failure",
           text: "Disculpe, usuario en uso."
@@ -108,7 +152,6 @@ app.post("/register", (req, res) => {
     // Si el password está mal ingresado renderizo signup con mensaje de error
     if (!req.body.password || req.body.password !== req.body.confirmPassword) {
       res.render("signup", {
-        layout: "landing",
         message: {
           class: "failure",
           text: "Las contraseñas deben coincidir"
@@ -124,7 +167,7 @@ app.post("/register", (req, res) => {
 
         // Si se pudo registrar renderizo index con mensaje de éxito
         res.render("index", {
-          layout: "landing", message: {
+          message: {
             class: "success",
             text: "Usuario registrado exitosamente, ingrese por favor."
           }
@@ -134,7 +177,6 @@ app.post("/register", (req, res) => {
 
         // Si no se pudo registrar renderizo signup con mensaje de error
         res.render("signup", {
-          layout: "landing",
           message: {
             class: "failure",
             text: "Disculpe, no se pudo registrar, intente nuevamente."
