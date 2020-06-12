@@ -40,9 +40,18 @@ app.use(expSession({
 // Rutas
 // Pagina de login
 app.get("/", (req, res) => {
-  res.render("index");
-  console.log(req.session)
+
+  if (req.session.loggedUser) {
+    res.redirect("/home")
+  } else {
+    res.redirect("/login");
+  }
+
 });
+
+app.get("/login", (req, res) => {
+  res.render("index");
+})
 
 // Pagina de registro
 app.get("/signup", (req, res) => {
@@ -51,13 +60,38 @@ app.get("/signup", (req, res) => {
 
 // Pagina principal
 app.get("/home", (req, res) => {
-  animals.getAll(list => {
-    res.render("home", {
-      layout: "logged",
-      animals: list,
-      username: req.session.loggedUser
+
+  if (req.session.loggedUser) {
+
+    animals.getAll(list => {
+      res.render("home", {
+        layout: "logged",
+        animals: list,
+        username: req.session.loggedUser
+      })
+
     })
-  })
+  } else {
+    res.render("index", {
+      message: {
+        class: "failure",
+        text: "Usuario o contraseña invalidos"
+      }
+    });
+  }
+
+});
+
+// Agregar animal
+
+app.get("/addAnimal", (req,res) => {
+
+  if(req.session.loggedUser) {
+    
+    res.render("addAnimal" , { layout: "logged"});
+    
+  }
+
 });
 
 // Perfil de animal
@@ -92,13 +126,8 @@ app.post("/login", (req, res) => {
       // Guardar usuario logueado en sesion
       req.session.loggedUser = result.user;
 
-      animals.getAll(list => {
-        res.render("home", {
-          layout: "logged",
-          animals: list,
-          username: req.session.loggedUser
-        });
-      })
+      res.redirect("/home");
+
     } else {
       res.render("index", {
         message: {

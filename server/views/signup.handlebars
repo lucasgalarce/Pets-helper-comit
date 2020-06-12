@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="d-flex justify-content-center">
+    {{#if message}}
+    <p class="message-{{message.class}}">{{message.text}}</p>
+    {{/if}}
+  </div>
   <div class="d-flex justify-content-center h-100">
     <div class="card">
       <div class="card-header">
@@ -31,9 +36,6 @@
 
           <div class="form-group">
             <input type="submit" value="Registrar" class="btn float-right login_btn">
-            {{#if message}}
-            <p class="message-{{message.class}}">{{message.text}}</p>
-            {{/if}}
           </div>
         </form>
       </div>
