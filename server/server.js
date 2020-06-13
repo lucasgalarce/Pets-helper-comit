@@ -89,7 +89,9 @@ app.get("/addAnimal", (req,res) => {
   if(req.session.loggedUser) {
     
     res.render("addAnimal" , { layout: "logged"});
-    
+
+  } else {
+    res.redirect("/login");
   }
 
 });
@@ -217,6 +219,22 @@ app.post("/register", (req, res) => {
 
   });
 });
+
+app.post("/registerAnimal", (req, res) => {
+
+  animals.registerAnimal(req.body.nameAnimal, req.body.owner, req.body.cel, req.body.place,
+    req.body.info, req.body.mail, req.body.cp, result => {
+
+
+      if (result){
+        res.render("addAnimal", { 
+          layout: "logged",
+
+      })
+      }
+
+    })
+})
 
 
 

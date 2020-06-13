@@ -52,7 +52,45 @@ const getById = (filterId, cbResult) => {
     });
 }
 
+const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, callbackResult) => {
+    mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
+
+        if (err) {
+
+            callbackResult(false);
+
+        } else {
+            const usersCollection = client.db("Petshelper").collection("animals");
+
+            const newAnimal = {
+                name: nameAnimal,
+                owner,
+                cel,
+                place,
+                info,
+                mail,
+                cp
+            };
+
+            // Insertamos el user en la DB
+            usersCollection.insertOne(newAnimal, (err, result) => {
+
+                if (err) {
+                    callbackResult(false);
+                } else {
+                    callbackResult(true);
+                }
+
+                client.close();
+            });
+
+        }
+
+    });
+}
+
 module.exports = {
     getAll,
-    getById
+    getById,
+    registerAnimal
 }
