@@ -5,6 +5,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const expHbs = require('express-handlebars');
 const expSession = require('express-session')
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid'); 
 
 const app = express();
 
@@ -13,6 +15,32 @@ const animals = require('./animals.js')
 
 // Middleware archivos estaticos
 app.use(express.static(path.join(__dirname, "public")));
+
+// Configuracion de multer
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "public/img"),
+  filename: (req, file, cb) => {
+    cb(null, uuidv4() + path.extname(file.originalname).toLocaleLowerCase());
+  }
+});
+
+app.use(multer({
+  storage,
+  dest: path.join(__dirname, "public/img"),
+  limits: 20000000,
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg/;
+    const mimetype = filetypes.test(file.mimetype);
+    const extName = filetypes.test(path.extname(file.originalname));
+
+    if(mimetype && extName) {
+      return cb(null, true);
+    } else{
+      cb("Error, el archivo debe ser una imagen valida.")
+    }
+  }
+}).single('image'));
+
 
 // Body Parser para Content-Type "application/x-www-form-urlencoded"
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,6 +64,7 @@ app.use(expSession({
   resave: false,
   saveUninitialized: false
 }));
+
 
 // Rutas
 // Pagina de login
@@ -223,20 +252,18 @@ app.post("/register", (req, res) => {
 app.post("/registerAnimal", (req, res) => {
 
   animals.registerAnimal(req.body.nameAnimal, req.body.owner, req.body.cel, req.body.place,
-    req.body.info, req.body.mail, req.body.cp, result => {
-
-
-      if (result){
-        res.render("addAnimal", { 
-          layout: "logged",
-
-      })
+    req.body.info, req.body.mail, req.body.cp, req.file.filename, result => {
+      console.log(req.file)
+      // if (result){
+      //   res.render("addAnimal", { 
+      //     layout: "logged",
+      // });
+      // }
+      if (result) {
+        res.redirect("/addAnimal")
       }
-
-    })
-})
-
-
+    });
+});
 
 
 app.listen(port, (req, res) => {

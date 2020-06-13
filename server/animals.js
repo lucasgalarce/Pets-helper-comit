@@ -52,7 +52,7 @@ const getById = (filterId, cbResult) => {
     });
 }
 
-const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, callbackResult) => {
+const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, animalPic, callbackResult) => {
     mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
 
         if (err) {
@@ -69,7 +69,8 @@ const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, callbackR
                 place,
                 info,
                 mail,
-                cp
+                cp,
+                animalPic
             };
 
             // Insertamos el user en la DB

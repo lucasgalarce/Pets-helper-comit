@@ -2,41 +2,44 @@
 
     <h1>Agregar mascota perdida</h1>
     <h3>Dejanos los datos tuyos, de tu mascota y lo subimos a la pagina</h3>
-    <form action="/registerAnimal" method="post">
+    <form action="/registerAnimal" method="post" enctype="multipart/form-data">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="nameAnimal">Nombre del animal perdido</label>
-                <input type="text" class="form-control" id="nameAnimal" placeholder="Nombre animal">
+                <input type="text" class="form-control" id="nameAnimal" name="nameAnimal" placeholder="Nombre animal">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="owner">Nombre del dueño</label>
-                <input type="text" class="form-control" id="owner" placeholder="Nombre dueño">
+                <input type="text" class="form-control" id="owner" name="owner" placeholder="Nombre dueño">
             </div>
             <div class="form-group col-md-6">
                 <label for="cel">Celular de contacto</label>
-                <input type="text" class="form-control" id="cel" placeholder="Celular">
+                <input type="text" class="form-control" id="cel" name="id" placeholder="Celular">
             </div>
         </div>
         <div class="form-group">
             <label for="place">Zona donde se lo vio por ultima vez</label>
-            <input type="text" class="form-control" id="place" placeholder="1234 Main St">
+            <input type="text" class="form-control" id="place" name="place" placeholder="1234 Main St">
         </div>
         <div class="form-group">
             <label for="info">Informacion extra</label>
-            <input type="text" class="form-control" id="info" placeholder="Info">
+            <input type="text" class="form-control" id="info" name="info" placeholder="Info">
         </div>
         <div class="form-row">
             <div class="form-group col-md-8">
                 <label for="mail">Mail</label>
-                <input type="mail" class="form-control" id="mail" placeholder="ejemplo@gmail.com">
+                <input type="mail" class="form-control" id="mail" name="mail" placeholder="ejemplo@gmail.com">
             </div>
 
             <div class="form-group col-md-4">
                 <label for="cp">Codigo Postal</label>
-                <input type="text" class="form-control" id="cp">
+                <input type="text" class="form-control" id="cp" id="cp">
             </div>
+        </div>
+        <div class="form-group">
+            <input type="file" name="image">
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Subir</button>
