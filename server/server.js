@@ -92,7 +92,7 @@ app.get("/home", (req, res) => {
 
   if (req.session.loggedUser) {
 
-    animals.getAll(list => {
+    animals.getAll(req.query.nameFilter, list => {
       res.render("home", {
         layout: "logged",
         animals: list,
@@ -117,8 +117,10 @@ app.get("/addAnimal", (req,res) => {
 
   if(req.session.loggedUser) {
     
-    res.render("addAnimal" , { layout: "logged"});
-
+    res.render("addAnimal" , { 
+      layout: "logged",
+      username: req.session.loggedUser
+    });
   } else {
     res.redirect("/login");
   }
@@ -253,14 +255,14 @@ app.post("/registerAnimal", (req, res) => {
 
   animals.registerAnimal(req.body.nameAnimal, req.body.owner, req.body.cel, req.body.place,
     req.body.info, req.body.mail, req.body.cp, req.file.filename, result => {
-      console.log(req.file)
+
       // if (result){
       //   res.render("addAnimal", { 
       //     layout: "logged",
       // });
       // }
       if (result) {
-        res.redirect("/addAnimal")
+        res.redirect("/home")
       }
     });
 });

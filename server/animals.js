@@ -7,7 +7,7 @@ const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
  * @param {funtion} cbResult callback function(array)
  */
 
-const getAll = cbResult => {
+const getAll = (nameFilter, cbResult) => {
     mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
         if (err) {
             // retornar array vacío
@@ -17,8 +17,14 @@ const getAll = cbResult => {
 
             const animalsCollection = client.db("Petshelper").collection("animals");
 
+            const filter = {};
+            
+            if (nameFilter) {
+                filter.name = { $regex: `.*${nameFilter.toLowerCase()}.*` };
+              }
+
             // Busco los datos y lo convierto en array
-            animalsCollection.find().toArray((err, animalList) => {
+            animalsCollection.find(filter).toArray((err, animalList) => {
                 if (err) {
                     cbResult([]);
                 } else {
@@ -63,7 +69,7 @@ const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, animalPic
             const usersCollection = client.db("Petshelper").collection("animals");
 
             const newAnimal = {
-                name: nameAnimal,
+                name: nameAnimal.toLowerCase(),
                 owner,
                 cel,
                 place,
