@@ -92,7 +92,7 @@ app.get("/home", (req, res) => {
 
   if (req.session.loggedUser) {
 
-    animals.getAll(req.query.nameFilter, req.query.placeFilter, list => {
+    animals.getAll(req.query.nameFilter, req.query.placeFilter, req.query.orderDate, req.query.page, list => {
       res.render("home", {
         layout: "logged",
         animals: list,

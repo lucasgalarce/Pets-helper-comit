@@ -7,7 +7,7 @@ const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
  * @param {funtion} cbResult callback function(array)
  */
 
-const getAll = (nameFilter, placeFilter, cbResult) => {
+const getAll = (nameFilter, placeFilter, orderDate, page,  cbResult) => {
     mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
         if (err) {
             // retornar array vacío
@@ -18,6 +18,7 @@ const getAll = (nameFilter, placeFilter, cbResult) => {
             const animalsCollection = client.db("Petshelper").collection("animals");
 
             const filter = {};
+            const order = {};
 
             if (nameFilter) {
                 filter.name = { $regex : nameFilter, $options: 'i'};
@@ -25,9 +26,13 @@ const getAll = (nameFilter, placeFilter, cbResult) => {
             if (placeFilter) {
                 filter.place = { $regex : placeFilter, $options: 'i'};
             }
+            if(orderDate){
+                order.date = -1
+            }
 
             // Busco los datos y lo convierto en array
-            animalsCollection.find(filter).toArray((err, animalList) => {
+            // .limit(6)
+            animalsCollection.find(filter).sort(order).skip(6 * (page - 1)).limit(6).toArray((err, animalList) => {
                 if (err) {
                     cbResult([]);
                 } else {
