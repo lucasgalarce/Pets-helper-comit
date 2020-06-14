@@ -16,7 +16,7 @@
 </header>
 
 <div class="animal-list" id="animal-list">
-    <h2>Lista de animalitos:</h2>
+    <h2>Lista de animalitos perdidos:</h2>
     <div class="container">
         <div class="row justify-content-center">
             <input id="nameFilter" class="form-control form-control-sm ml-3 w-25" type="text" placeholder="Buscar"
@@ -32,7 +32,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{this.name}}</h5>
                         <p class="card-text">{{this.info}}.</p>
-                        <a href="/animal/{{this.id}}" class="btn btn-primary">Ver info de {{this.name}}</a>
+                        <p class="card-text">Zona: {{this.place}}.</p>
+                        <a href="/animal/{{this.objectId}}" class="btn btn-primary">Ver info de {{this.name}}</a>
                     </div>
                 </div>
             </div>
@@ -46,7 +47,7 @@
             <div class="col">
                 <div class="Agregar">
                     <a href="/addAnimal">
-                        <button class="btn btn-warning mb-3 mt-3">Agregar animalito</button>
+                        <button class="btn btn-lg btn-warning mb-3 mt-3">Agregar animalito</button>
                     </a>
                 </div>
             </div>

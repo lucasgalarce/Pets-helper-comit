@@ -1,13 +1,20 @@
-<br>
-<br>
-{{#if animal}}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2 class="align-">Nombre: {{animal.name}}</h2>
-            <h3>Zona: {{animal.place}}</h3>
 
-            <img class="profile-picture" src="/img/{{animal.animalPic}}" height="200px" alt="">
+{{#if animal}}
+<div class="container container-profile">
+    <div class="row text-center">
+        <div class="col">
+            <h2 class="p-2">¡SE BUSCA!</h2>
+            <h2 class="p-2">Nombre: {{animal.name}}</h2>
+            <h3 class="p-2">Zona: {{animal.place}}</h3>
+            <h3 class="p-2">Se perdio el {{animal.date}}</h3>
+            <h4 class="p-2">Descripcion o informacion: {{animal.info}}</h4>
+
+            <img class="profile-picture" src="/img/{{animal.animalPic}}" height="300px" alt="">
+
+            <h4 class="p-2">Dueño que lo busca: {{animal.owner}}</h4>
+            <h4 class="p-2">Celular: {{animal.cel}}</h4>
+            <h4 class="p-2">Mail de contacto: {{animal.mail}}</h4>
+
         </div>
     </div>
 </div>

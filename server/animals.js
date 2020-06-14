@@ -18,16 +18,29 @@ const getAll = (nameFilter, cbResult) => {
             const animalsCollection = client.db("Petshelper").collection("animals");
 
             const filter = {};
-            
+
             if (nameFilter) {
                 filter.name = { $regex: `.*${nameFilter.toLowerCase()}.*` };
-              }
+            }
 
             // Busco los datos y lo convierto en array
             animalsCollection.find(filter).toArray((err, animalList) => {
                 if (err) {
                     cbResult([]);
                 } else {
+                    animalList = animalList.map(animal => ({
+                        objectId: animal._id.toString(),
+                        name: animal.name,
+                        owner: animal.owner,
+                        cel: animal.cel,
+                        place: animal.place,
+                        info: animal.info,
+                        mail: animal.mail,
+                        cp: animal.cp,
+                        animalPic: animal.animalPic,
+                        date: animal.date
+                    }));
+
                     cbResult(animalList);
                 }
                 client.close();
@@ -45,12 +58,24 @@ const getById = (filterId, cbResult) => {
 
             const animalsCollection = client.db("Petshelper").collection("animals");
 
-            animalsCollection.findOne({ id: filterId }, (err, animal) => {
+            animalsCollection.findOne({ _id: new mongodb.ObjectID(filterId) }, (err, animal) => {
                 if (err) {
                     cbResult(undefined);
                 } else {
-                    cbResult(animal);
+                    cbResult({
+                        objectId: animal._id.toString(),
+                        name: animal.name,
+                        owner: animal.owner,
+                        cel: animal.cel,
+                        place: animal.place,
+                        info: animal.info,
+                        mail: animal.mail,
+                        cp: animal.cp,
+                        animalPic: animal.animalPic,
+                        date: animal.date
+                    });
                 }
+
                 client.close();
             });
         }
@@ -67,6 +92,7 @@ const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, animalPic
 
         } else {
             const usersCollection = client.db("Petshelper").collection("animals");
+            const fecha = new Date();
 
             const newAnimal = {
                 name: nameAnimal.toLowerCase(),
@@ -76,7 +102,8 @@ const registerAnimal = (nameAnimal, owner, cel, place, info, mail, cp, animalPic
                 info,
                 mail,
                 cp,
-                animalPic
+                animalPic,
+                date: fecha.getDate() + "/" + fecha.getMonth() + "/" + fecha.getFullYear()
             };
 
             // Insertamos el user en la DB
