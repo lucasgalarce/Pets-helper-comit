@@ -16,11 +16,11 @@ header {
 }
 
 .nav-item a {
-    color: white;
+    color: rgb(2, 2, 2);
 }
 
 .nav-item a:hover {
-    color: rgba(0, 255, 191, 0.685);
+    color: rgba(60, 0, 255, 0.685);
 }
 
 h1 {

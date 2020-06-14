@@ -7,7 +7,7 @@ const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
  * @param {funtion} cbResult callback function(array)
  */
 
-const getAll = (nameFilter, cbResult) => {
+const getAll = (nameFilter, placeFilter, cbResult) => {
     mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
         if (err) {
             // retornar array vacío
@@ -20,7 +20,10 @@ const getAll = (nameFilter, cbResult) => {
             const filter = {};
 
             if (nameFilter) {
-                filter.name = { $regex: `.*${nameFilter.toLowerCase()}.*` };
+                filter.name = { $regex : nameFilter, $options: 'i'};
+            }
+            if (placeFilter) {
+                filter.place = { $regex : placeFilter, $options: 'i'};
             }
 
             // Busco los datos y lo convierto en array

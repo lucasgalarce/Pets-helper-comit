@@ -21,7 +21,10 @@
         <div class="row justify-content-center">
             <input id="nameFilter" class="form-control form-control-sm ml-3 w-25" type="text" placeholder="Buscar"
                 aria-label="Search">
-            <button class="btn-primary ml-2 rounded" onclick="filter()">Buscar</button>
+            <button class="btn-primary ml-2 rounded" onclick="filter()">Filtrar por nombre</button>
+            <button class="btn-primary ml-2 rounded" onclick="filter2()">Filtrar por zona</button>
+            <button class="btn-primary ml-2 rounded" onclick="filter3()">Ordenar por fecha</button>
+
         </div>
         <div class="row justify-content-center">
 
@@ -33,7 +36,7 @@
                         <h5 class="card-title">{{this.name}}</h5>
                         <p class="card-text">{{this.info}}.</p>
                         <p class="card-text">Zona: {{this.place}}.</p>
-                        <a href="/animal/{{this.objectId}}" class="btn btn-primary">Ver info de {{this.name}}</a>
+                        <a href="/animal/{{this.objectId}}" class="btn btn-info">Ver info de {{this.name}}</a>
                     </div>
                 </div>
             </div>
@@ -59,5 +62,8 @@
 <script>
     function filter() {
         window.location.href = `/home?nameFilter=` + document.getElementById('nameFilter').value;
+    }
+    function filter2() {
+        window.location.href = `/home?placeFilter=` + document.getElementById('nameFilter').value;
     }
 </script>
