@@ -14,12 +14,12 @@ Tener instalado npm
 ```
 [npm](https://www.npmjs.com/get-npm) :computer:
 
-## Instalación :wrench:
+## Instalación y ejecución :wrench:
 
 ```
 Ejecutar npm install en la consola
+Ejecutar npm start en la consola
 ```
-
 
 ## Recorrido por la app :computer:
 
