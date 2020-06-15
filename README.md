@@ -1,4 +1,4 @@
-# Pets helper :dog: :cat:
+# Pets helper :dog:  :cat:
 Proyecto final realizado para el curso de NodeJs Full Stack en ComunidadIT. Se utiliza html, css, javascript, nodejs, express y handlebars.
 
 El proyecto fue pensado para ayudar a las personas a encontrar a sus mascotas perdidas. En la que sea facil cargar los datos y que sea visible para el usuario a penas ingresa en la pagina.
@@ -14,7 +14,7 @@ Tener instalado npm
 ```
 [npm](https://www.npmjs.com/get-npm) :computer:
 
-Instalación :wrench:
+## Instalación :wrench:
 
 ```
 Ejectutar npm install en la consola
