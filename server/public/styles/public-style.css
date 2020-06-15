@@ -4,6 +4,7 @@
     background-color: lightcoral;
     color: darkred;
     padding: 7px;
+    text-align: center;
   }
   
   .message-success {
@@ -12,6 +13,7 @@
     background-color: lightgreen;
     color: darkgreen;
     padding: 7px;
+    text-align: center;
   }
   
   .signup-message {
