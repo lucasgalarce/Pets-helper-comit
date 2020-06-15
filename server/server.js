@@ -36,7 +36,7 @@ app.use(multer({
     if(mimetype && extName) {
       return cb(null, true);
     } else{
-      cb("Error, el archivo debe ser una imagen valida.")
+      cb("Error, el archivo debe ser jpg/jpge y pesar menos de 2mb.")
     }
   }
 }).single('image'));
@@ -92,11 +92,12 @@ app.get("/home", (req, res) => {
 
   if (req.session.loggedUser) {
 
-    animals.getAll(req.query.nameFilter, req.query.placeFilter, req.query.orderDate, req.query.page, list => {
+    animals.getAll(req.query.nameFilter, req.query.placeFilter, req.query.orderDate, req.query.page, (list, results) => {
       res.render("home", {
         layout: "logged",
         animals: list,
-        username: req.session.loggedUser
+        username: req.session.loggedUser,
+        results
       })
 
     })

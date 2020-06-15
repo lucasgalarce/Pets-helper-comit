@@ -7,7 +7,7 @@ const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
  * @param {funtion} cbResult callback function(array)
  */
 
-const getAll = (nameFilter, placeFilter, orderDate, page,  cbResult) => {
+const getAll = (nameFilter, placeFilter, orderDate, pageNumber,  cbResult) => {
     mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
         if (err) {
             // retornar array vacío
@@ -28,10 +28,26 @@ const getAll = (nameFilter, placeFilter, orderDate, page,  cbResult) => {
             }
             if(orderDate){
                 order.date = -1
+            }   
+
+            // Como la primera vez que entro al home la pagina viene undefined, le asigno uno para que previous y next funcionen
+            if(pageNumber == undefined){
+                pageNumber = 1;
             }
 
+            let page = pageNumber;
+
+            const results = {}
+
+            results.next = {
+                page: parseInt(page) + 1
+            }
+            results.previous = {
+                page: parseInt(page) -1
+            }
+
+
             // Busco los datos y lo convierto en array
-            // .limit(6)
             animalsCollection.find(filter).sort(order).skip(6 * (page - 1)).limit(6).toArray((err, animalList) => {
                 if (err) {
                     cbResult([]);
@@ -49,7 +65,7 @@ const getAll = (nameFilter, placeFilter, orderDate, page,  cbResult) => {
                         date: animal.date
                     }));
 
-                    cbResult(animalList);
+                    cbResult(animalList, results);
                 }
                 client.close();
             })

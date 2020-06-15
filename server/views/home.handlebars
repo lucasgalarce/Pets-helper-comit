@@ -2,9 +2,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col">
-                <h1>Un lugar donde poder reencontrar a tu mascota perdida o adoptar a un animalito en busca de un nuevo
-                    hogar
-                </h1>
+                <h1><strong>Un lugar donde poder reencontrar a tu mascota perdida</strong></h1>
                 <!-- Search form -->
                 <form class="form-inline d-flex justify-content-end md-form form-sm active-cyan active-cyan-2 mt-2">
                     <i class="fas fa-search" aria-hidden="true"></i>
@@ -19,11 +17,11 @@
     <h2>Lista de animalitos perdidos:</h2>
     <div class="container">
         <div class="row justify-content-center">
-            <input id="nameFilter" class="form-control form-control-sm ml-3 w-25" type="text" placeholder="Buscar"
+            <input id="nameFilter" class="form-control form-control-sm ml-3 mt-1 w-25" type="text" placeholder="Buscar"
                 aria-label="Search">
-            <button class="btn-primary ml-2 rounded" onclick="filter()">Filtrar por nombre</button>
-            <button class="btn-primary ml-2 rounded" onclick="filter2()">Filtrar por zona</button>
-            <button class="btn-primary ml-2 rounded" onclick="filter3()">Ordenar por mas recientes</button>
+            <button class="btn-primary ml-2 mt-1 rounded" onclick="filter()">Filtrar por nombre</button>
+            <button class="btn-primary ml-2 mt-1 rounded" onclick="filter2()">Filtrar por zona</button>
+            <button class="btn-primary ml-2 mt-1 rounded" onclick="filter3()">Ordenar por mas recientes</button>
 
         </div>
         <div class="row justify-content-center">
@@ -31,7 +29,7 @@
             {{#each animals}}
             <div class="card-deck p-3">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="/img/{{this.animalPic}}" height="200px" alt="Card image">
+                    <img class="card-img-top" src="/img/{{this.animalPic}}" height="200em" alt="Card image">
                     <div class="card-body">
                         <h5 class="card-title">{{this.name}}</h5>
                         <p class="card-text">{{this.info}}.</p>
@@ -46,14 +44,14 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                <li class="page-item">
+                    <a class="page-link" href="/home?page={{results.previous.page}}" >Previous</a>
                 </li>
                 <li class="page-item"><a class="page-link" href="/home?page=1">1</a></li>
                 <li class="page-item"><a class="page-link" href="/home?page=2">2</a></li>
                 <li class="page-item"><a class="page-link" href="/home?page=3">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="/home?page={{results.next.page}}">Next</a>
                 </li>
             </ul>
         </nav>
