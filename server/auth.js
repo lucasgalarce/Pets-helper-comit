@@ -14,7 +14,7 @@ const login = (username, password, callbackResult) => {
   mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
 
     if (err) {
-      
+
       //No me pude conectar al server, retorno false
       callbackResult({
         message: "Sorry, site is under maintance now, retry later"
@@ -144,8 +144,46 @@ const registerUser = (username, password, callbackResult) => {
   });
 }
 
+const changePassword = (username, newPassword, cbResult) => {
+  mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
+
+    if (err) {
+
+      // Si hay error de conexión, retornamos el false
+      // (no cerramos conexión porque no se logró abrir)
+      callbackResult(false);
+
+    } else {
+      const usersCollection = client.db("Petshelper").collection("users");
+
+      const findQuery = { username: username };
+
+      const updateQuery = {
+        $set: {
+          password: newPassword
+        }
+      };
+
+      // Actualizo la clave en la DB
+      usersCollection.updateOne(findQuery, updateQuery, (err, result) => {
+
+        if (err) {
+          console.log(err);
+          cbResult(false);
+        } else {
+          cbResult(true);
+        }
+
+        client.close();
+      });
+    }
+  });
+
+};
+
 module.exports = {
   login,
   getUser,
-  registerUser
+  registerUser,
+  changePassword
 }

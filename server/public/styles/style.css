@@ -68,3 +68,20 @@ h1 {
 .container-profile {
     background-color: rgb(177, 174, 166);
 }
+.message-failure {
+    width: 40%;
+    border-color: red;
+    background-color: lightcoral;
+    color: darkred;
+    padding: 7px;
+    text-align: center;
+  }
+  
+  .message-success {
+    width: 40%;
+    border-color: green;
+    background-color: lightgreen;
+    color: darkgreen;
+    padding: 7px;
+    text-align: center;
+  }

@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const expHbs = require('express-handlebars');
 const expSession = require('express-session')
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid'); 
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
@@ -33,9 +33,9 @@ app.use(multer({
     const mimetype = filetypes.test(file.mimetype);
     const extName = filetypes.test(path.extname(file.originalname));
 
-    if(mimetype && extName) {
+    if (mimetype && extName) {
       return cb(null, true);
-    } else{
+    } else {
       cb("Error, el archivo debe ser jpg/jpge y pesar menos de 2mb.")
     }
   }
@@ -79,12 +79,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("index");
+  res.render("index", {
+    message: req.session.message
+  });
 })
 
 // Pagina de registro
 app.get("/signup", (req, res) => {
-  res.render("signup")
+  res.render("signup", {
+    message: req.session.message
+  })
 })
 
 // Pagina principal
@@ -112,13 +116,73 @@ app.get("/home", (req, res) => {
 
 });
 
+// Pagina de perfil usuario
+
+app.get("/changepass", (req, res) => {
+
+  if (req.session.loggedUser) {
+
+    res.render("changePass", {
+      message: req.session.message,
+      layout: "logged",
+      username: req.session.loggedUser
+    });
+
+  } else {
+    res.redirect("/login");
+  }
+
+});
+
+app.post("/changepass", (req, res) => {
+
+  if (req.session.loggedUser) {
+    // Si el password está mal ingresado renderizo signup con mensaje de error
+    if (!req.body.password || req.body.password !== req.body.confirmPassword) {
+
+      req.session.message = {
+        class: "failure",
+        text: "Las contraseñas deben coincidir"
+      }
+      res.redirect("/changepass");
+
+      return;
+    }
+
+    auth.changePassword(req.session.loggedUser, req.body.password, result => {
+      if (result) {
+
+        req.session.message = {
+          class: "success",
+          text: "Contraseña cambiada correctamente."
+        }
+        res.redirect("/login");
+
+      } else {
+
+        req.session.message = {
+          class: "failure",
+          text: "No pudimos cambiar la contraseña."
+        }
+
+        res.redirect("/changepass");
+      }
+
+    });
+
+  } else {
+    res.redirect("login");
+  }
+
+});
+
 // Agregar animal
 
-app.get("/addAnimal", (req,res) => {
+app.get("/addAnimal", (req, res) => {
 
-  if(req.session.loggedUser) {
-    
-    res.render("addAnimal" , { 
+  if (req.session.loggedUser) {
+
+    res.render("addAnimal", {
       layout: "logged",
       username: req.session.loggedUser
     });
