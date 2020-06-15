@@ -118,11 +118,11 @@ app.get("/home", (req, res) => {
 
 // Pagina de perfil usuario
 
-app.get("/changepass", (req, res) => {
+app.get("/userProfile", (req, res) => {
 
   if (req.session.loggedUser) {
 
-    res.render("changePass", {
+    res.render("userProfile", {
       message: req.session.message,
       layout: "logged",
       username: req.session.loggedUser
@@ -144,7 +144,7 @@ app.post("/changepass", (req, res) => {
         class: "failure",
         text: "Las contraseñas deben coincidir"
       }
-      res.redirect("/changepass");
+      res.redirect("/userProfile");
 
       return;
     }
@@ -165,7 +165,7 @@ app.post("/changepass", (req, res) => {
           text: "No pudimos cambiar la contraseña."
         }
 
-        res.redirect("/changepass");
+        res.redirect("/userProfile");
       }
 
     });
