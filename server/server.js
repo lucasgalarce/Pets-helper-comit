@@ -134,6 +134,7 @@ app.get("/userProfile", (req, res) => {
 
 });
 
+// Endpoint cambiar contraseña
 app.post("/changepass", (req, res) => {
 
   if (req.session.loggedUser) {
@@ -169,6 +170,37 @@ app.post("/changepass", (req, res) => {
       }
 
     });
+
+  } else {
+    res.redirect("login");
+  }
+
+});
+
+// Endpoint borrar usuario
+app.post("/deleteUser", (req, res) => {
+
+  if (req.session.loggedUser) {
+
+    auth.deleteUser(req.session.loggedUser, result => {
+      if (result) {
+
+        req.session.message = {
+          class: "success",
+          text: "Usuario borrado correctamente."
+        }
+        res.redirect("/login");
+
+      } else {
+
+        req.session.message = {
+          class: "failure",
+          text: "No pudimos borrar el usuario."
+        }
+
+        res.redirect("/userProfile");
+      }
+    })
 
   } else {
     res.redirect("login");

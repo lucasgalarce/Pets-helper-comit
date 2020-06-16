@@ -129,3 +129,6 @@ h1 {
 .link {
   color: aqua;
 }
+.link:hover {
+  color: rgb(217, 255, 0);
+}

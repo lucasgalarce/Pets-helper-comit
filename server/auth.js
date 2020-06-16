@@ -55,9 +55,9 @@ const login = (username, password, callbackResult) => {
 
 
 /**
- * Función que consulta usuarix en la DB y retorna los datos
+ * Función que consulta usuario en la DB y retorna los datos
  * 
- * @param {string} username Nombre de usuarix
+ * @param {string} username Nombre de usuario
  * @param {function} callbackResult Callback: function(result: {
  *  success: boolean,
  *  username: {
@@ -103,7 +103,7 @@ const getUser = (username, callbackResult) => {
 }
 
 /**
- * Función que registra nuevx usuarix (asume username y password validados)
+ * Función que registra nuevo usuario (asume username y password validados)
  * 
  * @param {string} username Username
  * @param {string} password Password
@@ -181,9 +181,43 @@ const changePassword = (username, newPassword, cbResult) => {
 
 };
 
+const deleteUser = (username, cbResult) => {
+  mongodb.MongoClient.connect(uri, mongoConfig, (err, client) => {
+
+    if (err) {
+
+      // Si hay error de conexión, retornamos el false
+      // (no cerramos conexión porque no se logró abrir)
+      callbackResult(false);
+
+    } else {
+      const usersCollection = client.db("Petshelper").collection("users");
+
+      const findQuery = { username: username };
+
+      // Actualizo la clave en la DB
+      usersCollection.deleteOne(findQuery, (err, result) => {
+
+        if (err) {
+          console.log(err);
+          cbResult(false);
+        } else {
+          cbResult(true);
+        }
+
+        client.close();
+      });
+    }
+  });
+}
+
+
+
+
 module.exports = {
   login,
   getUser,
   registerUser,
-  changePassword
+  changePassword,
+  deleteUser
 }
