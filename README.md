@@ -31,8 +31,8 @@ Ejecutar npm start en la consola
 * Abajo de esta lista tenemos el paginado en el que podemos ir a la página que deseemos, siguiente o anterior.
 * Mas abajo tenemos el botón Agregar animalito que nos lleva a la sección en la que podemos cargar estos datos y una imagen.
 * Al final de la página el footer con todos los datos de contacto con el administrador.
-* En el navbar contamos con un desplegable de usuario, en el que podemos cambiar la contraseña o cerrar sesión.
-
+* En el navbar contamos con un desplegable de usuario, en el que podemos ir al perfil del usuario o cerrar sesión.
+* Dentro del perfil del usuario podemos cambiar contraseña, o borrar nuestra cuenta.
 
 
 ## Autor :black_nib:
