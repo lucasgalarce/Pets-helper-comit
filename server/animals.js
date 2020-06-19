@@ -4,6 +4,10 @@ const mongoConfig = { useUnifiedTopology: true, useNewUrlParser: true };
 
 /**
  * Consulta los datos de los animales
+ * @param {String} nameFilter
+ * @param {String} placeFilter
+ * @param {Date} orderDate
+ * @param {Int} pageNumber
  * @param {funtion} cbResult callback function(array)
  */
 

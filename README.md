@@ -10,12 +10,12 @@ Para utilizar el proyecto solo debes descargar el repositorio e instalar las dep
 ## Pre-requisitos :clipboard:
 
 ```
-Tener instalado npm
+Tener instalado node
 ```
-[npm](https://www.npmjs.com/get-npm) :computer:
+[node](https://nodejs.org/es/) :computer:
 
 ## Instalación y ejecución :wrench:
-
+asd
 ```
 Ejecutar npm install en la consola
 Ejecutar npm start en la consola
